@@ -43,12 +43,12 @@ export default function Home() {
     <Navbar />
 
     <section className="main-section">
-      <div className="page-heading py-16">
-        <h1>AI-Powered Resume Scores & Instant ATS Score   </h1>
+      <div className=" page-heading py-16 ">
+        <h1 >AI-Powered Resume Scores & Instant ATS Score   </h1>
         {!loadingResumes && resumes?.length === 0 ? (
             <h2>No resumes found. Upload your first resume to get feedback.</h2>
         ): (
-          <h2>Smart Resume Feedback & ATS Analysis Powered by AI</h2>
+          <h2 className="flex items-center justify-center  ">Smart Resume Feedback & ATS Analysis Powered by AI</h2>
         )}
       </div>
       {loadingResumes && (
