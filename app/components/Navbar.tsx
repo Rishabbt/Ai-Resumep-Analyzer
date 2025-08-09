@@ -2,9 +2,9 @@ import {Link} from "react-router";
 
 const Navbar = () => {
     return (
-        <nav className="navbar">
+        <nav className="navbar bg-slate-500 ">
             <Link to="/">
-                <p className="text-2xl font-bold text-gradient">RESUMIND</p>
+                <p className="text-xl font-bold text-white md:text-2xl  text-gradient   ">RESUMIND</p>
             </Link>
             <Link to="/upload" className="primary-button w-fit">
                 Upload Resume

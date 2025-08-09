@@ -33,12 +33,12 @@ const ATS: React.FC<ATSProps> = ({ score, suggestions }) => {
       : 'Needs Improvement';
 
   return (
-    <div className={`bg-gradient-to-b ${gradientClass} to-white rounded-2xl shadow-md w-full p-6`}>
+    <div className={`bg-slate-900 ${gradientClass} to-white rounded-2xl shadow-md w-full p-6`}>
       {/* Top section with icon and headline */}
       <div className="flex items-center gap-4 mb-6">
         <img src={iconSrc} alt="ATS Score Icon" className="w-12 h-12" />
         <div>
-          <h2 className="text-2xl font-bold">ATS Score - {score}/100</h2>
+          <h2 className="text-2xl font-bold text-white">ATS Score - {score}/100</h2>
         </div>
       </div>
 
