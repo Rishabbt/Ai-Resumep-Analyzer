@@ -4,7 +4,7 @@ const Navbar = () => {
     return (
         <nav className="navbar bg-slate-500 ">
             <Link to="/">
-                <p className="text-xl font-bold text-white md:text-2xl  text-gradient   ">RESUMIND</p>
+                <p className="text-sm font-bold text-white md:text-2xl  text-gradient   ">RESUMIND</p>
             </Link>
             <Link to="/upload" className="primary-button w-fit">
                 Upload Resume

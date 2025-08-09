@@ -113,7 +113,7 @@ const Upload = () => {
                                 <FileUploader onFileSelect={handleFileSelect} />
                             </div>
 
-                            <button className="primary-button" type="submit">
+                            <button className="text-xl  primary-gradient  text-white rounded-full px-4 py-1 cursor-pointer w-full flex items-center justify-center " type="submit">
                                 Analyze Resume
                             </button>
                         </form>
