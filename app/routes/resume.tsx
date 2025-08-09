@@ -6,8 +6,8 @@ import ATS from "~/components/ATS";
 import Details from "~/components/Details";
 
 export const meta = () => ([
-    { title: 'Resumind | Review ' },
-    { name: 'description', content: 'Detailed overview of your resume' },
+    { title: 'Rezoom | Review ' },
+    { name: 'description', content: 'Detailed overview of your application' },
 ])
 
 const Resume = () => {
