@@ -25,8 +25,8 @@
 2. ⚙️ [Tech Stack](#tech-stack)
 3. 🔋 [Features](#features)
 4. 🤸 [Quick Start](#quick-start)
-
-
+5.    [Overview](#overview)
+ 
 ## 🚨 Tutorial
 
 This repository contains the code corresponding to an in-depth tutorial available on our YouTube channel, <a href="https://www.youtube.com/@javascriptmastery/videos" target="_blank"><b>JavaScript Mastery</b></a>.
@@ -111,6 +111,6 @@ npm install
 ```bash
 npm run dev
 ```
-
-Open [http://localhost:5173](http://localhost:5173) in your browser to view the project.
+<a name="overview">✨ Overview</a>
+Open ai-resumep-analyzer.vercel.app in your browser to view the project.
 
