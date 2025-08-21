@@ -112,5 +112,5 @@ npm install
 npm run dev
 ```
 <a name="overview">✨ Overview</a>
-Open ai-resumep-analyzer.vercel.app in your browser to view the project.
+Open (ai-resumep-analyzer.vercel.app](https://ai-resumep-analyzer.vercel.app/) in your browser to view the project.
 
