@@ -1,47 +1,80 @@
-import {Link} from "react-router";
-import ScoreCircle from "~/components/ScoreCircle";
-import {useEffect, useState} from "react";
-import {usePuterStore} from "~/lib/puter";
+import { Link } from "react-router";
+import { useEffect, useState } from "react";
+import { usePuterStore } from "~/lib/puter";
 
-const ResumeCard = ({ resume: { id, companyName, jobTitle, feedback, imagePath } }: { resume: Resume }) => {
+const getScoreClass = (score: number) => {
+    if (score >= 70) return "dark-score-hi";
+    if (score >= 50) return "dark-score-md";
+    return "dark-score-lo";
+};
+
+const ThumbPlaceholder = () => (
+    <div className="dark-card-thumb-placeholder">
+        <div className="dark-thumb-line accent" />
+        <div style={{ height: 4 }} />
+        <div className="dark-thumb-line full" />
+        <div className="dark-thumb-line three-q" />
+        <div className="dark-thumb-line half" />
+        <div style={{ height: 3 }} />
+        <div className="dark-thumb-line full" />
+        <div className="dark-thumb-line three-q" />
+        <div className="dark-thumb-line half" />
+        <div className="dark-thumb-line full" />
+    </div>
+);
+
+const ResumeCard = ({
+    resume: { id, companyName, jobTitle, feedback, imagePath },
+}: {
+    resume: Resume;
+}) => {
     const { fs } = usePuterStore();
-    const [resumeUrl, setResumeUrl] = useState('');
+    const [resumeUrl, setResumeUrl] = useState("");
 
     useEffect(() => {
-        const loadResume = async () => {
+        const load = async () => {
             const blob = await fs.read(imagePath);
-            if(!blob) return;
-            let url = URL.createObjectURL(blob);
-            setResumeUrl(url);
-        }
-
-        loadResume();
+            if (!blob) return;
+            setResumeUrl(URL.createObjectURL(blob));
+        };
+        load();
     }, [imagePath]);
 
+    const atsScore = feedback?.ATS?.score ?? feedback?.overallScore ?? 0;
+    const scoreClass = getScoreClass(atsScore);
+
     return (
-        <Link to={`/resume/${id}`} className="resume-card animate-in fade-in duration-1000">
-            <div className="resume-card-header">
-                <div className="flex flex-col gap-2">
-                    {companyName && <h2 className="!text-black font-bold break-words">{companyName}</h2>}
-                    {jobTitle && <h3 className="text-lg break-words text-gray-500">{jobTitle}</h3>}
-                    {!companyName && !jobTitle && <h2 className="!text-black font-bold">Resume</h2>}
-                </div>
-                <div className="flex-shrink-0">
-                    <ScoreCircle score={feedback.overallScore} />
-                </div>
+        <Link to={`/resume/${id}`} className="dark-resume-card">
+            <div className="dark-card-thumb">
+                {resumeUrl ? (
+                    <img src={resumeUrl} alt="resume preview" />
+                ) : (
+                    <ThumbPlaceholder />
+                )}
             </div>
-            {resumeUrl && (
-                <div className="gradient-border animate-in fade-in duration-1000">
-                    <div className="w-full h-full">
-                        <img
-                            src={resumeUrl}
-                            alt="resume"
-                            className="w-full h-[350px] max-sm:h-[200px] object-cover object-top"
-                        />
+            <div className="dark-card-body">
+                <div>
+                    <div className="dark-card-company">
+                        {companyName || "No company"}
+                    </div>
+                    <div className="dark-card-role">
+                        {jobTitle || "Untitled Resume"}
                     </div>
                 </div>
-                )}
+                <div className="dark-card-footer">
+                    <span className={`dark-score-badge ${scoreClass}`}>
+                        ATS {atsScore}
+                    </span>
+                    <span className="dark-card-date">
+                        {new Date().toLocaleDateString("en-GB", {
+                            day: "numeric",
+                            month: "short",
+                        })}
+                    </span>
+                </div>
+            </div>
         </Link>
-    )
-}
-export default ResumeCard
+    );
+};
+
+export default ResumeCard;

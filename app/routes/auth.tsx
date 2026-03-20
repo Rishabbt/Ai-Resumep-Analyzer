@@ -1,9 +1,9 @@
-import {usePuterStore} from "~/lib/puter";
-import {useEffect} from "react";
-import {useLocation, useNavigate} from "react-router";
+import { usePuterStore } from "~/lib/puter";
+import { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router";
 
 export const meta = () => ([
-    { title: 'Resumind | Auth' },
+    { title: 'Rezoom | Sign In' },
     { name: 'description', content: 'Log into your account' },
 ])
 
@@ -14,40 +14,63 @@ const Auth = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if(auth.isAuthenticated) navigate(next);
-    }, [auth.isAuthenticated, next])
+        if (auth.isAuthenticated) navigate(next);
+    }, [auth.isAuthenticated, next]);
 
     return (
-        <main className="bg-slate-900 bg-cover min-h-screen flex items-center justify-center">
-            <div className="gradient-border shadow-lg">
-                <section className="flex flex-col gap-8 bg-white rounded-2xl p-10">
-                    <div className="flex flex-col items-center gap-2 text-center">
-                        <h1>Welcome</h1>
-                        <h2>Log In to Continue Your Job Journey</h2>
+        <main className="dark-page" style={{ paddingTop: 0 }}>
+            <div className="dark-topbar">
+                <div className="dark-logo">
+                    <span className="dark-logo-dot" />
+                    rezoom
+                </div>
+            </div>
+            <div className="dark-auth-body">
+                <div className="dark-auth-card">
+                    <div className="dark-auth-logo">
+                        <span className="dark-logo-dot" />
+                        rezoom
                     </div>
-                    <div>
-                        {isLoading ? (
-                            <button className="auth-button animate-pulse">
-                                <p>Signing you in...</p>
-                            </button>
-                        ) : (
-                            <>
-                                {auth.isAuthenticated ? (
-                                    <button className="auth-button" onClick={auth.signOut}>
-                                        <p>Log Out</p>
-                                    </button>
-                                ) : (
-                                    <button className="auth-button" onClick={auth.signIn}>
-                                        <p>Log In</p>
-                                    </button>
-                                )}
-                            </>
-                        )}
+                    <div className="dark-auth-sub">
+                        AI-powered resume analysis<br />& ATS scoring
                     </div>
-                </section>
+                    <div className="dark-auth-divider" />
+
+                    {isLoading ? (
+                        <div className="dark-auth-loading">
+                            <div className="dark-auth-spinner" />
+                            signing you in...
+                        </div>
+                    ) : (
+                        <>
+                            {auth.isAuthenticated ? (
+                                <button
+                                    className="dark-puter-btn"
+                                    onClick={auth.signOut}
+                                >
+                                    <div className="dark-puter-logo">P</div>
+                                    Sign Out
+                                </button>
+                            ) : (
+                                <button
+                                    className="dark-puter-btn"
+                                    onClick={auth.signIn}
+                                >
+                                    <div className="dark-puter-logo">P</div>
+                                    Continue with Puter
+                                </button>
+                            )}
+                        </>
+                    )}
+
+                    <div className="dark-auth-note">
+                        Your data is stored privately in your Puter account.<br />
+                        No passwords. No tracking.
+                    </div>
+                </div>
             </div>
         </main>
-    )
+    );
 }
 
-export default Auth
+export default Auth;

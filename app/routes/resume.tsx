@@ -1,17 +1,17 @@
-import {Link, useNavigate, useParams} from "react-router";
-import {useEffect, useState} from "react";
-import {usePuterStore} from "~/lib/puter";
+import { Link, useNavigate, useParams } from "react-router";
+import { useEffect, useState } from "react";
+import { usePuterStore } from "~/lib/puter";
 import Summary from "~/components/Summary";
 import ATS from "~/components/ATS";
 import Details from "~/components/Details";
 
 export const meta = () => ([
-    { title: 'Rezoom | Review ' },
+    { title: 'Rezoom | Review' },
     { name: 'description', content: 'Detailed overview of your application' },
 ])
 
 const Resume = () => {
-    const { auth, isLoading, fs, kv } = usePuterStore();
+    const { auth, isLoading, fs, kv, puterReady } = usePuterStore();
     const { id } = useParams();
     const [imageUrl, setImageUrl] = useState('');
     const [resumeUrl, setResumeUrl] = useState('');
@@ -19,74 +19,74 @@ const Resume = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if(!isLoading && !auth.isAuthenticated) navigate(`/auth?next=/resume/${id}`);
-    }, [isLoading])
+        if (!puterReady) return;
+        if (!isLoading && !auth.isAuthenticated) navigate(`/auth?next=/resume/${id}`);
+    }, [isLoading, puterReady]);
 
     useEffect(() => {
+        if (!puterReady) return;
         const loadResume = async () => {
             const resume = await kv.get(`resume:${id}`);
-
-            if(!resume) return;
-
+            if (!resume) return;
             const data = JSON.parse(resume);
 
             const resumeBlob = await fs.read(data.resumePath);
-            if(!resumeBlob) return;
-
-            const pdfBlob = new Blob([resumeBlob], { type: 'application/pdf' });
-            const resumeUrl = URL.createObjectURL(pdfBlob);
-            setResumeUrl(resumeUrl);
+            if (!resumeBlob) return;
+            setResumeUrl(URL.createObjectURL(new Blob([resumeBlob], { type: 'application/pdf' })));
 
             const imageBlob = await fs.read(data.imagePath);
-            if(!imageBlob) return;
-            const imageUrl = URL.createObjectURL(imageBlob);
-            setImageUrl(imageUrl);
+            if (!imageBlob) return;
+            setImageUrl(URL.createObjectURL(imageBlob));
 
             setFeedback(data.feedback);
-            console.log({resumeUrl, imageUrl, feedback: data.feedback });
         }
-
         loadResume();
-    }, [id]);
+    }, [id, puterReady]);
 
     return (
-        <main className="!pt-0">
-            <nav className="resume-nav bg-slate-900">
-                <Link to="/" className="back-button bg-slate-900">
-                    <img src="/icons/back.svg" alt="logo" className="w-2.5 h-2.5" />
-                    <span className="text-white text-sm font-semibold">Back to Homepage</span>
+        <main className="dark-page" style={{ paddingTop: 0 }}>
+            <div className="dark-topbar">
+                <Link to="/" className="dark-logo">
+                    <span className="dark-logo-dot" />
+                    rezoom
                 </Link>
-            </nav>
-            <div className="flex flex-row w-full max-lg:flex-col-reverse">
-                <section className="feedback-section bg-slate-800 bg-cover h-[100vh] sticky top-0 items-center justify-center">
-                    {imageUrl && resumeUrl && (
-                        <div className="animate-in fade-in duration-1000 gradient-border max-sm:m-0 h-[90%] max-wxl:h-fit w-fit">
-                            <a href={resumeUrl} target="_blank" rel="noopener noreferrer">
-                                <img
-                                    src={imageUrl}
-                                    className="w-full h-full object-contain rounded-2xl"
-                                    title="resume"
-                                />
-                            </a>
-                        </div>
-                    )}
-                </section>
-                <section className="feedback-section bg-slate-800 0">
-                    <h2 className="text-4xl !text-black font-bold">Resume Review</h2>
-                    {feedback ? (
-                        <div className="flex flex-col gap-8 animate-in fade-in duration-1000">
-                            <Summary feedback={feedback} />
-                            <ATS score={feedback.ATS.score || 0} suggestions={feedback.ATS.tips || []} />
-                            <Details feedback={feedback} />
-                        </div >
-                    ) : (
-                        <div className="">
-                        <img src="/images/resume-scan-2.gif" className="  w-full  " />
-                        </div>
-                    )}
-                </section>
+                <Link to="/" className="dark-result-back">
+                    ← Dashboard
+                </Link>
             </div>
+
+            {!feedback ? (
+                <div className="dark-scanning">
+                    <img src="/images/resume-scan-2.gif" style={{ width: 180, opacity: 0.7 }} alt="scanning" />
+                    <span className="dark-status-text">analyzing resume...</span>
+                </div>
+            ) : (
+                <div className="dark-result-layout">
+                    <div className="dark-result-left">
+                        {imageUrl && resumeUrl ? (
+                            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
+                                <a href={resumeUrl} target="_blank" rel="noopener noreferrer">
+                                    <div className="dark-resume-preview-wrap">
+                                        <img src={imageUrl} alt="resume" />
+                                    </div>
+                                </a>
+                                <span style={{ fontSize: "11px", color: "var(--dark-faint)", fontFamily: "'Geist Mono', monospace" }}>
+                                    click to open PDF
+                                </span>
+                            </div>
+                        ) : (
+                            <div style={{ width: 160, height: 210, background: "var(--dark-surface)", borderRadius: 6, border: "1px solid var(--dark-border)" }} />
+                        )}
+                    </div>
+                    <div className="dark-result-right">
+                        <Summary feedback={feedback} />
+                        <ATS score={feedback.ATS.score || 0} suggestions={feedback.ATS.tips || []} />
+                        <Details feedback={feedback} />
+                    </div>
+                </div>
+            )}
         </main>
-    )
+    );
 }
-export default Resume
+
+export default Resume;

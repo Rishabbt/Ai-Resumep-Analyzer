@@ -1,15 +1,31 @@
-import {Link} from "react-router";
+import { Link } from "react-router";
+import { usePuterStore } from "~/lib/puter";
 
 const Navbar = () => {
+    const { auth } = usePuterStore();
+    const initials = auth.user?.username
+        ? auth.user.username.slice(0, 2).toUpperCase()
+        : "??";
+
     return (
-        <nav className="navbar bg-slate-500 ">
-            <Link to="/">
-                <p className="text-xl font-bold text-black md:text-3xl  text-gradient underline underline-offset-1 decoration-white  ">Rezoom</p>
+        <div className="dark-topbar">
+            <Link to="/" className="dark-logo">
+                <span  />
+                Rezoom
             </Link>
-            <Link to="/upload" className="primary-button w-fit">
-                Upload Resume
-            </Link>
-        </nav>
-    )
-}
-export default Navbar
+            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                {/* <Link to="/upload" className="dark-cta-btn">
+                    <span style={{ fontSize: "16px", color: "var(--accent-blue)", lineHeight: "1" }}>+</span>
+                    Analyze New
+                </Link> */}
+                {auth.isAuthenticated && (
+                    <div className="dark-user-dot" title={auth.user?.username}>
+                        {initials}
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+};
+
+export default Navbar;
