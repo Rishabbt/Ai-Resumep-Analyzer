@@ -242,6 +242,7 @@ export const usePuterStore = create<PuterStore>((set, get) => {
     };
 
     const init = (): void => {
+         if (get().puterReady) return; 
         const puter = getPuter();
         if (puter) {
             set({ puterReady: true });
@@ -350,7 +351,7 @@ export const usePuterStore = create<PuterStore>((set, get) => {
                     ],
                 },
             ],
-            { model: "openai/gpt-5.2-chat" }
+            { model: "gpt-4o" }
         ) as Promise<AIResponse | undefined>;
     };
 

@@ -39,7 +39,7 @@ export default function Home() {
     loadResumes()
   }, []);
 
-  return <main className="bg-slate-900 bg-cover">
+  return <main className="bg-black bg-cover">
     <Navbar />
 
     <section className="main-section">
