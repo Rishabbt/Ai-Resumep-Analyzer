@@ -36,7 +36,7 @@ export default function Home() {
     }, [puterReady, auth.isAuthenticated]);
 
     return (
-        <main className="dark-page" style={{ paddingTop: 0 }}>
+        <main className="dark-page" >
             <Navbar />
             <div className="dark-home-body">
                 {loadingResumes ? (

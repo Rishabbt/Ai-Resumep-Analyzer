@@ -77,7 +77,7 @@ const Upload = () => {
     }
 
     return (
-        <main className="dark-page" style={{ paddingTop: 0 }}>
+        <main className="dark-page" >
             <Navbar />
             <div className="dark-upload-body">
                 {isProcessing ? (

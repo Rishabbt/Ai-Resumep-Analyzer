@@ -4,9 +4,7 @@
 @import "tw-animate-css";
 
 
-main {
-  @apply min-h-screen pt-10;
-}
+
 
 @keyframes fadeIn {
   from {

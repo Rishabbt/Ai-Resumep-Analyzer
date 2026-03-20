@@ -18,7 +18,7 @@ const Auth = () => {
     }, [auth.isAuthenticated, next]);
 
     return (
-        <main className="dark-page" style={{ paddingTop: 0 }}>
+        <main className="dark-page" >
             <div className="dark-topbar">
                 <div className="dark-logo">
                     <span className="dark-logo-dot" />

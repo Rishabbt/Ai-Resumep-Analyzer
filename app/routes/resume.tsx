@@ -44,7 +44,7 @@ const Resume = () => {
     }, [id, puterReady]);
 
     return (
-        <main className="dark-page" style={{ paddingTop: 0 }}>
+        <main className="dark-page" >
             <div className="dark-topbar">
                 <Link to="/" className="dark-logo">
                     <span className="dark-logo-dot" />
