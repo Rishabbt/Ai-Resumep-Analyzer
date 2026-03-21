@@ -65,12 +65,7 @@ const ResumeCard = ({
                     <span className={`dark-score-badge ${scoreClass}`}>
                         ATS {atsScore}
                     </span>
-                    <span className="dark-card-date">
-                        {new Date().toLocaleDateString("en-GB", {
-                            day: "numeric",
-                            month: "short",
-                        })}
-                    </span>
+                   
                 </div>
             </div>
         </Link>

@@ -9,7 +9,7 @@ const Navbar = () => {
 
     return (
         <div className="dark-topbar">
-            <Link to="/" className="dark-logo">
+            <Link to="/" className="text-2xl">
                 <span  />
                 Rezoom
             </Link>
