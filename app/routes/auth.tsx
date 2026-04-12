@@ -22,14 +22,14 @@ const Auth = () => {
             <div className="dark-topbar">
                 <div className="dark-logo">
                     <span className="dark-logo-dot" />
-                    rezoom
+                    Rezoom
                 </div>
             </div>
             <div className="dark-auth-body">
                 <div className="dark-auth-card">
                     <div className="dark-auth-logo">
                         <span className="dark-logo-dot" />
-                        rezoom
+                        Rezoom
                     </div>
                     <div className="dark-auth-sub">
                         AI-powered resume analysis<br />& ATS scoring

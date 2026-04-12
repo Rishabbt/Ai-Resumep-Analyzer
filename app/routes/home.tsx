@@ -67,7 +67,7 @@ export default function Home() {
                         <div className="dark-section-head">
                             <div>
                                 <div className="dark-section-title">Your Resumes</div>
-                                <div className="dark-section-sub">{resumes.length} analyzed</div>
+                                <div className="dark-section-sub ">{resumes.length} analyzed</div>
                             </div>
                             <Link to="/upload" className="dark-cta-btn">
                                 <span style={{ fontSize: "16px", color: "var(--accent-blue)", lineHeight: "1" }}>+</span>
