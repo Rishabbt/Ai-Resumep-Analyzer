@@ -24,14 +24,17 @@ const Navbar = () => {
                 
                 Rezoom
             </Link>
-            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                {auth.isAuthenticated && (
-                    <div className="rz-avatar" title={auth.user?.username}>
-                        {initials}
-                    </div>
-                    
-                )}
+            
+
+<div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+    {auth.isAuthenticated && (
+        <Link to="/auth" style={{ textDecoration: "none" }}>
+            <div className="rz-avatar" title={auth.user?.username}>
+                {initials}
             </div>
+        </Link>
+    )}
+</div>
             
         </nav>
     );
