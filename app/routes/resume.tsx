@@ -44,41 +44,47 @@ const Resume = () => {
     }, [id, puterReady]);
 
     return (
-        <main className="dark-page" >
-            <div className="dark-topbar">
-                <Link to="/" className="dark-logo">
-                    <span className="dark-logo-dot" />
-                    rezoom
+        <main className="rz-page">
+            {/* Top bar */}
+            <nav className="rz-detail-nav">
+                <Link to="/" className="rz-logo">
+                    <span className="rz-logo-dot" />
+                    Rezoom
                 </Link>
-                <Link to="/" className="dark-result-back">
+                <Link to="/" className="rz-btn rz-btn-ghost" style={{ fontSize: '13px', padding: '8px 16px' }}>
                     ← Dashboard
                 </Link>
-            </div>
+            </nav>
 
             {!feedback ? (
-                <div className="dark-scanning">
-                    <img src="/images/resume-scan-2.gif" style={{ width: 180, opacity: 0.7 }} alt="scanning" />
-                    <span className="dark-status-text">analyzing resume...</span>
+                <div className="rz-scanning">
+                    <img src="/images/resume-scan-2.gif" style={{ width: 150, opacity: 0.55 }} alt="scanning" />
+                    <span className="rz-status-text">analyzing resume…</span>
                 </div>
             ) : (
-                <div className="dark-result-layout">
-                    <div className="dark-result-left">
+                <div className="rz-detail-body">
+                    {/* Left — resume preview */}
+                    <div className="rz-preview-col">
                         {imageUrl && resumeUrl ? (
-                            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
-                                <a href={resumeUrl} target="_blank" rel="noopener noreferrer">
-                                    <div className="dark-resume-preview-wrap">
-                                        <img src={imageUrl} alt="resume" />
+                            <>
+                                <a href={resumeUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'block', width: '100%' }}>
+                                    <div className="rz-preview-wrap">
+                                        <img src={imageUrl} alt="résumé preview" />
                                     </div>
                                 </a>
-                                <span style={{ fontSize: "11px", color: "var(--dark-faint)", fontFamily: "'Geist Mono', monospace" }}>
-                                    click to open PDF
-                                </span>
-                            </div>
+                                <span className="rz-preview-hint">click to open PDF</span>
+                            </>
                         ) : (
-                            <div style={{ width: 160, height: 210, background: "var(--dark-surface)", borderRadius: 6, border: "1px solid var(--dark-border)" }} />
+                            <div style={{
+                                width: '100%', height: 260,
+                                background: 'var(--cream-deep)',
+                                borderRadius: 8, border: '1px solid var(--rule)'
+                            }} />
                         )}
                     </div>
-                    <div className="dark-result-right">
+
+                    {/* Right — analysis */}
+                    <div className="rz-analysis-col">
                         <Summary feedback={feedback} />
                         <ATS score={feedback.ATS.score || 0} suggestions={feedback.ATS.tips || []} />
                         <Details feedback={feedback} />

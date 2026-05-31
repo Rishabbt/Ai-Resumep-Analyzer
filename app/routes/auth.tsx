@@ -18,55 +18,43 @@ const Auth = () => {
     }, [auth.isAuthenticated, next]);
 
     return (
-        <main className="dark-page" >
-            <div className="dark-topbar">
-                <div className="dark-logo">
-                    <span className="dark-logo-dot" />
+        <main className="rz-auth-page">
+            <div className="rz-auth-card">
+                {/* Logo */}
+                <div className="rz-auth-logo">
+                    <span className="rz-logo-dot" />
                     Rezoom
                 </div>
-            </div>
-            <div className="dark-auth-body">
-                <div className="dark-auth-card">
-                    <div className="dark-auth-logo">
-                        <span className="dark-logo-dot" />
-                        Rezoom
-                    </div>
-                    <div className="dark-auth-sub">
-                        AI-powered resume analysis<br />& ATS scoring
-                    </div>
-                    <div className="dark-auth-divider" />
 
-                    {isLoading ? (
-                        <div className="dark-auth-loading">
-                            <div className="dark-auth-spinner" />
-                            signing you in...
-                        </div>
-                    ) : (
-                        <>
-                            {auth.isAuthenticated ? (
-                                <button
-                                    className="dark-puter-btn"
-                                    onClick={auth.signOut}
-                                >
-                                    <div className="dark-puter-logo">P</div>
-                                    Sign Out
-                                </button>
-                            ) : (
-                                <button
-                                    className="dark-puter-btn"
-                                    onClick={auth.signIn}
-                                >
-                                    <div className="dark-puter-logo">P</div>
-                                    Continue with Puter
-                                </button>
-                            )}
-                        </>
-                    )}
+                {/* Tagline */}
+                <p className="rz-auth-tagline">
+                    AI-powered resume analysis<br />& ATS scoring
+                </p>
 
-                    <div className="dark-auth-note">
-                        Your data is stored privately in your Puter account.<br />
-                        No passwords. No tracking.
+                <div className="rz-auth-rule" />
+
+                {/* Sign-in */}
+                {isLoading ? (
+                    <div className="rz-auth-spinner-row">
+                        <div className="rz-spinner" />
+                        signing you in...
                     </div>
+                ) : auth.isAuthenticated ? (
+                    <button className="rz-auth-btn" onClick={auth.signOut}>
+                        <div className="rz-puter-badge">P</div>
+                        Sign Out
+                    </button>
+                ) : (
+                    <button className="rz-auth-btn" onClick={auth.signIn}>
+                        <div className="rz-puter-badge">P</div>
+                        Continue with Puter
+                    </button>
+                )}
+
+                {/* Trust note */}
+                <div className="rz-auth-footnote">
+                    Your resume data is stored privately in your Puter account.<br />
+                    No passwords. No tracking. Only you can access it.
                 </div>
             </div>
         </main>

@@ -2,24 +2,25 @@ import { Link } from "react-router";
 import { useEffect, useState } from "react";
 import { usePuterStore } from "~/lib/puter";
 
-const getScoreClass = (score: number) => {
-    if (score >= 70) return "dark-score-hi";
-    if (score >= 50) return "dark-score-md";
-    return "dark-score-lo";
+const badgeClass = (score: number) => {
+    if (score >= 70) return "rz-badge rz-badge-pass";
+    if (score >= 50) return "rz-badge rz-badge-mid";
+    return "rz-badge rz-badge-fail";
 };
 
 const ThumbPlaceholder = () => (
-    <div className="dark-card-thumb-placeholder">
-        <div className="dark-thumb-line accent" />
-        <div style={{ height: 4 }} />
-        <div className="dark-thumb-line full" />
-        <div className="dark-thumb-line three-q" />
-        <div className="dark-thumb-line half" />
+    <div className="rz-thumb-sketch">
+        <div className="rz-sk-line accent" />
+        <div style={{ height: 5 }} />
+        <div className="rz-sk-line w100" />
+        <div className="rz-sk-line w75" />
+        <div className="rz-sk-line w55" />
         <div style={{ height: 3 }} />
-        <div className="dark-thumb-line full" />
-        <div className="dark-thumb-line three-q" />
-        <div className="dark-thumb-line half" />
-        <div className="dark-thumb-line full" />
+        <div className="rz-sk-line w100" />
+        <div className="rz-sk-line w75" />
+        <div style={{ height: 3 }} />
+        <div className="rz-sk-line w100" />
+        <div className="rz-sk-line w55" />
     </div>
 );
 
@@ -29,43 +30,35 @@ const ResumeCard = ({
     resume: Resume;
 }) => {
     const { fs } = usePuterStore();
-    const [resumeUrl, setResumeUrl] = useState("");
+    const [thumbUrl, setThumbUrl] = useState("");
 
     useEffect(() => {
         const load = async () => {
             const blob = await fs.read(imagePath);
             if (!blob) return;
-            setResumeUrl(URL.createObjectURL(blob));
+            setThumbUrl(URL.createObjectURL(blob));
         };
         load();
     }, [imagePath]);
 
-    const atsScore = feedback?.ATS?.score ?? feedback?.overallScore ?? 0;
-    const scoreClass = getScoreClass(atsScore);
+    const score = feedback?.ATS?.score ?? feedback?.overallScore ?? 0;
 
     return (
-        <Link to={`/resume/${id}`} className="dark-resume-card">
-            <div className="dark-card-thumb">
-                {resumeUrl ? (
-                    <img src={resumeUrl} alt="resume preview" />
+        <Link to={`/resume/${id}`} className="rz-resume-card">
+            <div className="rz-thumb">
+                {thumbUrl ? (
+                    <img src={thumbUrl} alt="résumé preview" />
                 ) : (
                     <ThumbPlaceholder />
                 )}
             </div>
-            <div className="dark-card-body">
+            <div className="rz-card-body">
                 <div>
-                    <div className="dark-card-company">
-                        {companyName || "No company"}
-                    </div>
-                    <div className="dark-card-role">
-                        {jobTitle || "Untitled Resume"}
-                    </div>
+                    <div className="rz-card-co">{companyName || "No company"}</div>
+                    <div className="rz-card-role">{jobTitle || "Untitled resume"}</div>
                 </div>
-                <div className="dark-card-footer">
-                    <span className={`dark-score-badge ${scoreClass}`}>
-                        ATS {atsScore}
-                    </span>
-                   
+                <div className="rz-card-foot">
+                    <span className={badgeClass(score)}>ATS {score}</span>
                 </div>
             </div>
         </Link>

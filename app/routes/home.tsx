@@ -36,45 +36,44 @@ export default function Home() {
     }, [puterReady, auth.isAuthenticated]);
 
     return (
-        <main className="dark-page" >
+        <main className="rz-page">
             <Navbar />
-            <div className="dark-home-body">
+            <div className="rz-home-wrap">
                 {loadingResumes ? (
-                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "80px 20px", gap: "16px" }}>
-                        <img src="/images/resume-scan-2.gif" style={{ width: 120, opacity: 0.6 }} alt="loading" />
-                        <span style={{ fontSize: "13px", color: "var(--dark-faint)", fontFamily: "'Geist Mono', monospace" }}>
-                            loading resumes...
-                        </span>
+                    <div className="rz-loading">
+                        <img src="/images/resume-scan-2.gif" style={{ width: 96, opacity: 0.45 }} alt="loading" />
+                        <span className="rz-loading-label">loading resume...</span>
                     </div>
                 ) : resumes.length === 0 ? (
-                    <div className="dark-empty-state">
-                        <div style={{ width: 48, height: 48, background: "var(--dark-surface)", border: "1px solid var(--dark-border-2)", borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <div className="rz-empty">
+                        <div className="rz-empty-icon">
                             <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" stroke="#555" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                                <path d="M14 2v6h6M12 18v-6M9 15h6" stroke="#555" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"
+                                    stroke="var(--ink-3)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                <path d="M14 2v6h6M12 18v-6M9 15h6"
+                                    stroke="var(--ink-3)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                             </svg>
                         </div>
-                        <div className="dark-empty-title">No resumes yet</div>
-                        <div className="dark-empty-sub">
-                            Upload your first resume to get an ATS score and AI-powered feedback.
+                        <div className="rz-empty-title">No resume yet</div>
+                        <div className="rz-empty-sub">
+                            Upload your first resume to receive an ATS score and tailored AI feedback for your target role.
                         </div>
-                        <Link to="/upload" className="dark-primary-btn">
+                        <Link to="/upload" className="rz-btn rz-btn-primary">
                             Analyze your first resume →
                         </Link>
                     </div>
                 ) : (
                     <>
-                        <div className="dark-section-head">
+                        <div className="rz-home-hd">
                             <div>
-                                <div className="dark-section-title">Your Resumes</div>
-                                <div className="dark-section-sub ">{resumes.length} analyzed</div>
+                                <div className="rz-home-title">Your Resume</div>
+                                <div className="rz-home-sub">{resumes.length} analyzed</div>
                             </div>
-                            <Link to="/upload" className="dark-cta-btn">
-                                <span style={{ fontSize: "16px", color: "var(--accent-blue)", lineHeight: "1" }}>+</span>
-                                Analyze New
+                            <Link to="/upload" className="rz-btn rz-btn-primary">
+                                + Analyze new
                             </Link>
                         </div>
-                        <div className="dark-resume-grid">
+                        <div className="rz-grid">
                             {resumes.map((resume) => (
                                 <ResumeCard key={resume.id} resume={resume} />
                             ))}

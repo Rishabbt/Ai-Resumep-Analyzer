@@ -1,65 +1,75 @@
-import { useState, useCallback } from 'react'
+import { useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { formatSize } from '../lib/utils'
-
+import { useState } from 'react'
 interface FileUploaderProps {
     onFileSelect?: (file: File | null) => void;
 }
 
 const FileUploader = ({ onFileSelect }: FileUploaderProps) => {
-    const onDrop = useCallback((acceptedFiles: File[]) => {
-        const file = acceptedFiles[0] || null;
-        onFileSelect?.(file);
-    }, [onFileSelect]);
-
     const maxFileSize = 20 * 1024 * 1024;
 
-    const { getRootProps, getInputProps, isDragActive, acceptedFiles } = useDropzone({
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+const onDrop = useCallback((accepted: File[]) => {
+    const file = accepted[0] || null;
+    setSelectedFile(file);
+    onFileSelect?.(file);
+}, [onFileSelect]);
+
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
         multiple: false,
         accept: { 'application/pdf': ['.pdf'] },
         maxSize: maxFileSize,
     });
 
-    const file = acceptedFiles[0] || null;
+const file = selectedFile;
+    if (file) {
+        return (
+            <div className="rz-file-picked">
+                <div className="rz-file-info">
+                    <img src="/images/pdf.png" alt="PDF" style={{ width: 28, height: 28 }} />
+                    <div>
+                        <div className="rz-file-name">{file.name}</div>
+                        <div className="rz-file-size">{formatSize(file.size)}</div>
+                    </div>
+                </div>
+                <button
+                    type="button"
+                    className="rz-file-rm"
+onClick={(e) => {
+    e.stopPropagation();
+    setSelectedFile(null);
+    onFileSelect?.(null);
+}}                    aria-label="Remove file"
+                >
+                    ✕
+                </button>
+            </div>
+        );
+    }
 
     return (
-        <div>
-            {file ? (
-                <div className="dark-selected-file">
-                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                        <img src="/images/pdf.png" alt="pdf" style={{ width: 28, height: 28 }} />
-                        <div>
-                            <div className="dark-file-name">{file.name}</div>
-                            <div className="dark-file-size">{formatSize(file.size)}</div>
-                        </div>
-                    </div>
-                    <button
-                        className="dark-file-remove"
-                        onClick={(e) => { e.stopPropagation(); onFileSelect?.(null); }}
-                    >
-                        ✕
-                    </button>
-                </div>
-            ) : (
-                <div
-                    className="dark-drop-zone"
-                    style={{ borderColor: isDragActive ? 'var(--accent-blue)' : undefined }}
-                    {...getRootProps()}
-                >
-                    <input {...getInputProps()} />
-                    <div className="dark-drop-icon">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="#3b82f6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                            <path d="M17 8l-5-5-5 5M12 3v12" stroke="#3b82f6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                        </svg>
-                    </div>
-                    <div className="dark-drop-text">
-                        <span>Click to upload</span> or drag & drop
-                    </div>
-                    <div className="dark-drop-sub">PDF only · max {formatSize(maxFileSize)}</div>
-                </div>
-            )}
+        <div
+            className={`rz-dropzone${isDragActive ? ' is-active' : ''}`}
+            {...getRootProps()}
+        >
+            <input {...getInputProps()} />
+            <div className="rz-dropzone-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
+                        stroke="var(--clay)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                    <polyline points="17 8 12 3 7 8"
+                        stroke="var(--clay)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                    <line x1="12" y1="3" x2="12" y2="15"
+                        stroke="var(--clay)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+            </div>
+            <p className="rz-dropzone-text">
+                <em>Click to upload</em> or drag & drop
+            </p>
+            <p className="rz-dropzone-hint">PDF only · max {formatSize(maxFileSize)}</p>
         </div>
     );
 };

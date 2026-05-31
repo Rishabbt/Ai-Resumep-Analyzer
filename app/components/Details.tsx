@@ -1,89 +1,50 @@
-import { cn } from "~/lib/utils";
 import { Accordion, AccordionContent, AccordionHeader, AccordionItem } from "./Accordion";
 
-const getClass = (score: number) => {
-    if (score >= 70) return "hi";
-    if (score >= 50) return "md";
-    return "lo";
-};
+const cls = (score: number) => score >= 70 ? "pass" : score >= 50 ? "mid" : "fail";
 
-const CategoryHeader = ({ title, score }: { title: string; score: number }) => {
-    const cls = getClass(score);
-    return (
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", paddingRight: "8px" }}>
-            <span style={{ fontSize: "13px", fontWeight: 500, color: "var(--dark-text)" }}>{title}</span>
-            <span
-                className={`dark-score-badge ${cls === "hi" ? "dark-score-hi" : cls === "md" ? "dark-score-md" : "dark-score-lo"}`}
-                style={{ fontSize: "11px" }}
-            >
-                {score}/100
-            </span>
-        </div>
-    );
-};
+const CatHeader = ({ title, score }: { title: string; score: number }) => (
+    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", paddingRight: "8px" }}>
+        <span style={{ fontSize: "13.5px", fontWeight: 600, color: "var(--ink)" }}>{title}</span>
+        <span className={`rz-badge rz-badge-${cls(score)}`} style={{ fontSize: "10.5px" }}>
+            {score}/100
+        </span>
+    </div>
+);
 
-const CategoryContent = ({
-    tips,
-}: {
-    tips: { type: "good" | "improve"; tip: string; explanation: string }[];
-}) => {
-    return (
-        <div style={{ display: "flex", flexDirection: "column", gap: "10px", paddingTop: "4px" }}>
-            {tips.map((tip, i) => (
-                <div key={i} className="dark-tip-row" style={{ alignItems: "flex-start" }}>
-                    <div
-                        className={`dark-tip-dot ${tip.type === "good" ? "good" : "warn"}`}
-                        style={{ marginTop: "5px" }}
-                    />
-                    <div>
-                        <div className="dark-tip-title">{tip.tip}</div>
-                        <div className="dark-tip-explanation">{tip.explanation}</div>
-                    </div>
+const CatContent = ({ tips }: { tips: { type: "good" | "improve"; tip: string; explanation: string }[] }) => (
+    <div style={{ display: "flex", flexDirection: "column" }}>
+        {tips.map((t, i) => (
+            <div key={i} className="rz-tip" style={{ alignItems: "flex-start" }}>
+                <div className={`rz-tip-dot ${t.type === "good" ? "good" : "warn"}`} style={{ marginTop: "6px" }} />
+                <div>
+                    <p className="rz-tip-title">{t.tip}</p>
+                    <p className="rz-tip-explain">{t.explanation}</p>
                 </div>
-            ))}
-        </div>
-    );
-};
+            </div>
+        ))}
+    </div>
+);
 
-const Details = ({ feedback }: { feedback: Feedback }) => {
-    return (
-        <div className="dark-score-card" style={{ padding: 0, overflow: "hidden" }}>
-            <Accordion>
-                <AccordionItem id="tone-style">
-                    <AccordionHeader itemId="tone-style">
-                        <CategoryHeader title="Tone & Style" score={feedback.toneAndStyle.score} />
+const Details = ({ feedback }: { feedback: Feedback }) => (
+    <div className="rz-score-panel" style={{ padding: 0, gap: 0, overflow: "hidden" }}>
+        <Accordion>
+            {[
+                { id: "tone",      title: "Tone & Style", score: feedback.toneAndStyle.score, tips: feedback.toneAndStyle.tips },
+                { id: "content",   title: "Content",      score: feedback.content.score,      tips: feedback.content.tips      },
+                { id: "structure", title: "Structure",    score: feedback.structure.score,    tips: feedback.structure.tips    },
+                { id: "skills",    title: "Skills",       score: feedback.skills.score,       tips: feedback.skills.tips       },
+            ].map(({ id, title, score, tips }) => (
+                <AccordionItem key={id} id={id}>
+                    <AccordionHeader itemId={id}>
+                        <CatHeader title={title} score={score} />
                     </AccordionHeader>
-                    <AccordionContent itemId="tone-style">
-                        <CategoryContent tips={feedback.toneAndStyle.tips} />
+                    <AccordionContent itemId={id}>
+                        <CatContent tips={tips} />
                     </AccordionContent>
                 </AccordionItem>
-                <AccordionItem id="content">
-                    <AccordionHeader itemId="content">
-                        <CategoryHeader title="Content" score={feedback.content.score} />
-                    </AccordionHeader>
-                    <AccordionContent itemId="content">
-                        <CategoryContent tips={feedback.content.tips} />
-                    </AccordionContent>
-                </AccordionItem>
-                <AccordionItem id="structure">
-                    <AccordionHeader itemId="structure">
-                        <CategoryHeader title="Structure" score={feedback.structure.score} />
-                    </AccordionHeader>
-                    <AccordionContent itemId="structure">
-                        <CategoryContent tips={feedback.structure.tips} />
-                    </AccordionContent>
-                </AccordionItem>
-                <AccordionItem id="skills">
-                    <AccordionHeader itemId="skills">
-                        <CategoryHeader title="Skills" score={feedback.skills.score} />
-                    </AccordionHeader>
-                    <AccordionContent itemId="skills">
-                        <CategoryContent tips={feedback.skills.tips} />
-                    </AccordionContent>
-                </AccordionItem>
-            </Accordion>
-        </div>
-    );
-};
+            ))}
+        </Accordion>
+    </div>
+);
 
 export default Details;

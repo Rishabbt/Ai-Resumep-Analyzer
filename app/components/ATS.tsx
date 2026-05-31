@@ -1,52 +1,43 @@
-const getClass = (score: number) => {
-    if (score >= 70) return "hi";
-    if (score >= 50) return "md";
-    return "lo";
+const cls = (score: number) => score >= 70 ? "pass" : score >= 50 ? "mid" : "fail";
+
+const atsLabel = (score: number) => {
+    if (score >= 70) return "Strong match";
+    if (score >= 50) return "Partial match";
+    return "Weak match";
 };
 
-const getLabel = (score: number) => {
-    if (score >= 70) return "Strong Match";
-    if (score >= 50) return "Partial Match";
-    return "Weak Match";
-};
-
-interface Suggestion {
-    type: "good" | "improve";
-    tip: string;
-}
-
-interface ATSProps {
-    score: number;
-    suggestions: Suggestion[];
-}
+interface Suggestion { type: "good" | "improve"; tip: string; }
+interface ATSProps    { score: number; suggestions: Suggestion[]; }
 
 const ATS = ({ score, suggestions }: ATSProps) => {
-    const cls = getClass(score);
-    const label = getLabel(score);
-
+    const c = cls(score);
     return (
-        <div className="dark-score-card">
-            <div className="dark-score-card-header">
+        <div className="rz-score-panel">
+            <div className="rz-score-hd">
                 <div>
-                    <div className="dark-score-label">ATS Score</div>
-                    <div style={{ display: "flex", alignItems: "baseline", gap: "4px" }}>
-                        <div className={`dark-score-number ${cls}`}>{score}</div>
-                        <div className="dark-score-total">/ 100</div>
+                    <div className="rz-score-eyebrow">ATS Score</div>
+                    <div style={{ display: "flex", alignItems: "baseline", gap: "3px" }}>
+                        <span className={`rz-score-num ${c}`}>{score}</span>
+                        <span className="rz-score-denom">/ 100</span>
                     </div>
                 </div>
-                <div className={`dark-status-pill ${cls}`}>{label}</div>
+                <div className={`rz-score-pill ${c}`}>{atsLabel(score)}</div>
             </div>
-            <div className="dark-progress-bar">
-                <div className={`dark-progress-fill ${cls}`} style={{ width: `${score}%` }} />
+
+            <div className="rz-track">
+                <div className={`rz-fill rz-fill-${c}`} style={{ width: `${score}%` }} />
             </div>
-            <div style={{ display: "flex", flexDirection: "column" }}>
-                {suggestions.map((s, i) => (
-                    <div key={i} className="dark-tip-row">
-                        <div className={`dark-tip-dot ${s.type === "good" ? "good" : "warn"}`} />
-                        <div className="dark-tip-text">{s.tip}</div>
-                    </div>
-                ))}
-            </div>
+
+            {suggestions.length > 0 && (
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                    {suggestions.map((s, i) => (
+                        <div key={i} className="rz-tip">
+                            <div className={`rz-tip-dot ${s.type === "good" ? "good" : "warn"}`} />
+                            <p className="rz-tip-body">{s.tip}</p>
+                        </div>
+                    ))}
+                </div>
+            )}
         </div>
     );
 };

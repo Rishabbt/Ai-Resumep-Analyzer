@@ -4,27 +4,36 @@ import { usePuterStore } from "~/lib/puter";
 const Navbar = () => {
     const { auth } = usePuterStore();
     const initials = auth.user?.username
-        ? auth.user.username.slice(0, 2).toUpperCase()
-        : "??";
+  ? auth.user.username
+      .trim()
+      .split(" ")
+      .filter(Boolean)
+      .map(name => name[0].toUpperCase())
+      .reduce((result, current, index, arr) => {
+        if (arr.length === 1) return current;
+        if (index === 0) return current;
+        if (index === arr.length - 1) return result + current;
+        return result;
+      }, "")
+  : "??";
 
     return (
-        <div className="dark-topbar">
-            <Link to="/" className="text-2xl">
-                <span  />
+        <nav className="rz-nav">
+            <Link to="/" className="rz-logo">
+                <span className="rz-logo-dot" />
+                
                 Rezoom
             </Link>
             <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                {/* <Link to="/upload" className="dark-cta-btn">
-                    <span style={{ fontSize: "16px", color: "var(--accent-blue)", lineHeight: "1" }}>+</span>
-                    Analyze New
-                </Link> */}
                 {auth.isAuthenticated && (
-                    <div className="dark-user-dot" title={auth.user?.username}>
+                    <div className="rz-avatar" title={auth.user?.username}>
                         {initials}
                     </div>
+                    
                 )}
             </div>
-        </div>
+            
+        </nav>
     );
 };
 
